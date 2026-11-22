@@ -2,7 +2,7 @@ import { content as fallback, type SiteContent } from "./content";
 import { client } from "@/sanity/client";
 
 const query = `{
- "settings": *[_type == "siteSettings"] | order(_updatedAt desc)[0]{brand,location,tagline,intro,telegram,whatsapp,email,videoArchive},
+ "settings": *[_type == "siteSettings"] | order(_updatedAt desc)[0]{brand,location,tagline,intro,instagram,telegram,whatsapp,email,videoArchive},
  "music": *[_type == "musicTrack"] | order(order asc, _createdAt asc){title,category,length,url,"audio":audio.asset->url},
  "videos": *[_type == "videoItem"] | order(order asc, _createdAt asc){title,url},
  "photos": *[_type == "photoItem"] | order(order asc, _createdAt asc){name,category,alt,"src":image.asset->url},
