@@ -67,6 +67,33 @@ export default function Site({ content }: { content: SiteContent }) {
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
   const firstAudio = content.music.find(track => track.audio);
+  
+const [selectedAudio, setSelectedAudio] = useState<string | null>(null);
+
+const activeAudio = selectedAudio || firstAudio?.audio || "";
+
+useEffect(() => {
+  if (!selectedAudio) return;
+
+  const audio = audioRef.current;
+  if (!audio) return;
+
+  audio.play()
+    .then(() => setPlaying(true))
+    .catch(() => setPlaying(false));
+}, [selectedAudio]);
+
+const playTrack = (url: string) => {
+  if (url === activeAudio) {
+    toggleAudio();
+  } else {
+    setPlaying(false);
+    setCurrentTime(0);
+    setDuration(0);
+    setSelectedAudio(url);
+  }
+};
+
   const featuredVideo = content.videos?.find(v => v.featured) || content.videos?.[0];
   const videoSource = activeVideo ? videoPlayerSource(activeVideo.videoFile || activeVideo.url) : null;
   const visiblePhotos = content.photos.map((photo, originalIndex) => ({ ...photo, originalIndex })).filter(photo => photoFilter === "ALL" || photo.category === photoFilter);
@@ -145,11 +172,34 @@ export default function Site({ content }: { content: SiteContent }) {
             {content.music.map((track, idx) => <div className="track" key={track.number}>
               <div className="track-number">{track.number}</div><div className="track-copy"><strong>{track.title}</strong><small>{track.category}{track.isDemo ? " · ДЕМО-ЗВУК" : ""}</small></div>
               <span className="track-length">{track.length}</span>
-              {track.audio && track.audio === firstAudio?.audio ? <button className="track-action" onClick={toggleAudio} aria-label={playing ? "Пауза" : "Воспроизвести демо"}>{playing ? "Ⅱ" : "▶"}</button> : <a className="track-action" href={track.url || content.telegram} target="_blank" rel="noopener noreferrer" aria-label={`Открыть ${track.title}`}><Arrow diagonal /></a>}
+             
+{track.audio ? (
+  <button
+    className="track-action"
+    onClick={() => playTrack(track.audio!)}
+    aria-label={
+      playing && activeAudio === track.audio
+        ? "Пауза"
+        : `Воспроизвести ${track.title}`
+    }
+  >
+    {playing && activeAudio === track.audio ? "Ⅱ" : "▶"}
+  </button>
+) : (
+  <a
+    className="track-action"
+    href={track.url || content.telegram}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={`Открыть ${track.title}`}
+  >
+    <Arrow diagonal />
+  </a>
+)}
+
             </div>)}
             <div className="player-progress"><span>{formatTime(currentTime)}</span><input aria-label="Позиция воспроизведения демо" type="range" min="0" max={duration || 24} value={Math.min(currentTime, duration || 24)} onChange={e => { if (audioRef.current) audioRef.current.currentTime = Number(e.target.value); }} /><span>{formatTime(duration)}</span></div>
-            <audio ref={audioRef} src={firstAudio?.audio || ""} preload="metadata" onLoadedMetadata={e => setDuration(e.currentTarget.duration || 24)} onTimeUpdate={e => setCurrentTime(e.currentTarget.currentTime)} onEnded={() => setPlaying(false)} />
-            <p className="small-note">Добавляй новые миксы через Sanity Studio.</p>
+            <audio ref={audioRef} src={activeAudio} preload="metadata" onLoadedMetadata={e => setDuration(e.currentTarget.duration || 24)} onTimeUpdate={e => setCurrentTime(e.currentTarget.currentTime)} onEnded={() => setPlaying(false)} />
             <a className="pill-button" href={content.telegram} target="_blank" rel="noopener noreferrer">{content.musicArchiveButton} <Arrow diagonal /></a>
           </div>
         </div>
