@@ -4,9 +4,9 @@ export const content = {
   location: "ASTANA · KAZAKHSTAN",
   tagline: "Музыка — это то, что остаётся после события.",
   intro: "DJ ESTRE — диджей для событий, в которых важны настроение, энергия и внимание к деталям. От атмосферного welcome до танцпола, который не хочется покидать.",
-  email: "", // Вставьте публичный email для бронирований, например booking@example.com
+  email: "bekzhanov.rustam21@gmail.com", // Вставьте публичный email для бронирований, например booking@example.com
   telegram: "https://t.me/deejayestre",
-  whatsapp: "", // Вставьте ссылку https://wa.me/7XXXXXXXXXX
+  whatsapp: "https://wa.me/77073876627", // Вставьте ссылку https://wa.me/7XXXXXXXXXX
   videoArchive: "https://drive.google.com/drive/folders/1_rquLJ3-WH7i3XE8CNp--v2_BCOMgHDE?usp=sharing",
   // Замените эти заглушки названиями и ссылками на реальные миксы.
   music: [
