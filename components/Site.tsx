@@ -46,7 +46,7 @@ function Label({ index, children }: { index: string; children: React.ReactNode }
 }
 
 export default function Site({ content }: { content: SiteContent }) {
-  const nav = (content.navigation?.length ? content.navigation : defaultNav).filter(item => item.visible !== false);
+  const nav = (content.navigation?.length ? content.navigation : defaultNav).filter(item => !("visible" in item) || item.visible !== false)
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeVideo, setActiveVideo] = useState<NonNullable<SiteContent["videos"]>[number] | null>(null);
   const [activePhoto, setActivePhoto] = useState<number | null>(null);
