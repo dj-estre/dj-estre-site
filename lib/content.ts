@@ -8,6 +8,43 @@ export const content = {
   telegram: "https://t.me/deejayestre",
   instagram: "",
   whatsapp: "", // Вставьте ссылку https://wa.me/7XXXXXXXXXX
+  navigation: [
+    {label:"ABOUT",href:"#about",visible:true}, {label:"MUSIC",href:"#music",visible:true},
+    {label:"VIDEO",href:"#video",visible:true}, {label:"PHOTO",href:"#photo",visible:true},
+    {label:"PORTFOLIO",href:"#portfolio",visible:true}, {label:"CONTACT",href:"#contact",visible:true},
+  ],
+  heroTopline: "INDEPENDENT DJ / EVENT SOUND",
+  heroEyebrow: "SELECTED WORKS & MUSIC / 2026",
+  heroTitleFirst: "DJ",
+  heroTitleAccent: "ESTRE",
+  heroSubline: "SOUND THAT\nBECOMES A MEMORY.",
+  heroImage: "", heroDim: 60,
+  headerBookingText: "BOOK ME",
+  heroScrollText: "SCROLL TO EXPLORE",
+  heroBookingText: "AVAILABLE FOR BOOKINGS",
+  aboutSectionLabel: "THE ARTIST",
+  aboutKicker: "NOT JUST\nA PLAYLIST.",
+  aboutTitleFirst: "I CREATE", aboutTitleAccent: "THE FEELING.",
+  aboutLinkText: "МОЙ ОПЫТ", aboutFooterLeft: "THE RIGHT TRACK. THE RIGHT MOMENT.",
+  aboutFooterRight: "ASTANA / WORLDWIDE",
+  musicSectionLabel: "LISTEN / MUSIC", musicTitleFirst: "PRESS", musicTitleAccent: "PLAY.",
+  musicDescription: "Музыка — в центре всего.\nВыбери настроение и почувствуй звук.",
+  musicArchiveButton: "ВСЕ МИКСЫ В TELEGRAM",
+  videoSectionLabel: "WATCH / VIDEO", videoTitleFirst: "ON THE", videoTitleAccent: "MOVE.",
+  videoDescription: "Моменты, которые невозможно передать словами. Выступления, события, энергия зала.",
+  videoFeatureTitle: "SELECTED PERFORMANCES", videoFeatureSubtitle: "ВИДЕОПОРТФОЛИО / GOOGLE DRIVE",
+  videoArchiveButton: "EXPLORE VIDEOS", videoNote: "SHOWREEL / CORPORATE EVENTS / LIVE MOMENTS",
+  photoSectionLabel: "VIEW / PHOTO", photoTitleFirst: "IN THE", photoTitleAccent: "FRAME.",
+  photoDescription: "Каждый сет — своя история.\nКаждый кадр — момент.",
+  portfolioSectionLabel: "EXPERIENCE / PORTFOLIO", portfolioTitleFirst: "BUILT ON", portfolioTitleAccent: "EXPERIENCE.",
+  portfolioDescription: "Сцена, практика, соревнования и проекты, за которыми стоят реальные эмоции.",
+  clientLabel: "SELECTED CLIENTS / ЗАКАЗЧИКИ",
+  contactSectionLabel: "LET'S CONNECT", contactKicker: "GOT AN EVENT IN MIND?",
+  contactTitleFirst: "LET'S MAKE", contactTitleAccent: "IT LOUD.",
+  contactDescription: "Корпоратив, частная вечеринка или особенное событие — напиши, обсудим идею и музыкальный формат.",
+  telegramButtonText: "НАПИСАТЬ В TELEGRAM", instagramButtonText: "INSTAGRAM",
+  whatsappButtonText: "WHATSAPP", emailButtonText: "EMAIL",
+  footerLocation: "ASTANA · KAZAKHSTAN", footerBackText: "BACK TO TOP",
   videoArchive: "https://drive.google.com/drive/folders/1_rquLJ3-WH7i3XE8CNp--v2_BCOMgHDE?usp=sharing",
   // Замените эти заглушки названиями и ссылками на реальные миксы.
   music: [
@@ -31,4 +68,5 @@ export const content = {
   ],
 };
 
-export type SiteContent = typeof content & { videos?: Array<{title: string; url: string}> };
+export type VideoContent = {title:string; url?:string; videoFile?:string; poster?:string; featured?:boolean};
+export type SiteContent = typeof content & { videos?: VideoContent[] };
