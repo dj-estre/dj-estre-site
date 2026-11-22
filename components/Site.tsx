@@ -128,7 +128,62 @@ export default function Site({ content }: { content: SiteContent }) {
 
       <section className="contact-section section-pad" id="contact">
         <Label index="06 / 06">LET'S CONNECT</Label>
-        <div className="contact-body"><p className="contact-pre">GOT AN EVENT IN MIND?</p><h2>LET'S MAKE<br /><em>IT LOUD.</em></h2><p className="contact-copy">Корпоратив, частная вечеринка или особенное событие — напиши, обсудим идею и музыкальный формат.</p><div className="contact-actions"><a href={content.telegram} target="_blank" rel="noopener noreferrer" className="contact-primary">НАПИСАТЬ В TELEGRAM <Arrow diagonal /></a>{content.whatsapp && <a href={content.whatsapp} target="_blank" rel="noopener noreferrer" className="contact-secondary">WHATSAPP <Arrow diagonal /></a>}{content.email && <a href={`mailto:${content.email}`} className="contact-secondary">EMAIL <Arrow diagonal /></a>}</div></div>
+
+<div className="contact-body">
+  <p className="contact-pre">GOT AN EVENT IN MIND?</p>
+
+  <h2>
+    LET'S MAKE<br />
+    <em>IT LOUD.</em>
+  </h2>
+
+  <p className="contact-copy">
+    Корпоратив, частная вечеринка или особенное событие —
+    напиши, обсудим идею и музыкальный формат.
+  </p>
+
+  <div className="contact-actions">
+    <a
+      href={content.telegram}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="contact-primary"
+    >
+      НАПИСАТЬ В TELEGRAM <Arrow diagonal />
+    </a>
+
+    {content.instagram && (
+      <a
+        href={content.instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="contact-secondary"
+      >
+        INSTAGRAM <Arrow diagonal />
+      </a>
+    )}
+
+    {content.whatsapp && (
+      <a
+        href={content.whatsapp}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="contact-secondary"
+      >
+        WHATSAPP <Arrow diagonal />
+      </a>
+    )}
+
+    {content.email && (
+      <a
+        href={`mailto:${content.email}`}
+        className="contact-secondary"
+      >
+        EMAIL <Arrow diagonal />
+      </a>
+    )}
+  </div>
+</div>
         <footer><a href="#top" className="footer-logo">ESTRE®</a><span>© {new Date().getFullYear()} DJ ESTRE</span><span>ASTANA · KAZAKHSTAN</span><a href="#top">BACK TO TOP ↑</a></footer>
       </section>
     </main>
