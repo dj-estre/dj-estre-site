@@ -4,10 +4,17 @@ import { useEffect, useRef, useState } from "react";
 import type { SiteContent } from "@/lib/content";
 
 type Photo = SiteContent["photos"][number];
-const defaultNav = [
-  { href: "#about", label: "ABOUT" }, { href: "#music", label: "MUSIC" },
-  { href: "#video", label: "VIDEO" }, { href: "#photo", label: "PHOTO" },
-  { href: "#portfolio", label: "PORTFOLIO" }, { href: "#contact", label: "CONTACT" },
+const defaultNav: {
+  href: string;
+  label: string;
+  visible?: boolean;
+}[] = [
+  { href: "#about", label: "ABOUT" },
+  { href: "#music", label: "MUSIC" },
+  { href: "#video", label: "VIDEO" },
+  { href: "#photo", label: "PHOTO" },
+  { href: "#portfolio", label: "PORTFOLIO" },
+  { href: "#contact", label: "CONTACT" },
 ];
 
 function videoPlayerSource(raw?: string): {kind:"iframe"|"file";src:string} | null {
@@ -40,6 +47,11 @@ function videoPlayerSource(raw?: string): {kind:"iframe"|"file";src:string} | nu
 function Arrow({ diagonal = false }: { diagonal?: boolean }) {
   return <span aria-hidden="true" className="arrow">{diagonal ? "↗" : "→"}</span>;
 }
+const nav = (
+  content.navigation?.length
+    ? content.navigation
+    : defaultNav
+).filter(item => item.visible !== false);
 
 function Label({ index, children }: { index: string; children: React.ReactNode }) {
   return <div className="section-label"><span>{index}</span><span>{children}</span></div>;
