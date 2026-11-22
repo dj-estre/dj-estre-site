@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { content } from "@/lib/content";
+import type { SiteContent } from "@/lib/content";
 
-type Photo = (typeof content.photos)[number];
+type Photo = SiteContent["photos"][number];
 const nav = [
   { href: "#about", label: "ABOUT" }, { href: "#music", label: "MUSIC" },
   { href: "#video", label: "VIDEO" }, { href: "#photo", label: "PHOTO" },
@@ -18,7 +18,7 @@ function Label({ index, children }: { index: string; children: React.ReactNode }
   return <div className="section-label"><span>{index}</span><span>{children}</span></div>;
 }
 
-export default function Site() {
+export default function Site({ content }: { content: SiteContent }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activePhoto, setActivePhoto] = useState<number | null>(null);
   const [photoFilter, setPhotoFilter] = useState("ALL");
@@ -26,6 +26,7 @@ export default function Site() {
   const [duration, setDuration] = useState(24);
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const firstAudio = content.music.find(track => track.audio);
   const visiblePhotos = content.photos.map((photo, originalIndex) => ({ ...photo, originalIndex })).filter(photo => photoFilter === "ALL" || photo.category === photoFilter);
 
   useEffect(() => {
@@ -92,11 +93,11 @@ export default function Site() {
             {content.music.map((track, idx) => <div className="track" key={track.number}>
               <div className="track-number">{track.number}</div><div className="track-copy"><strong>{track.title}</strong><small>{track.category}{track.isDemo ? " · ДЕМО-ЗВУК" : ""}</small></div>
               <span className="track-length">{track.length}</span>
-              {idx === 0 ? <button className="track-action" onClick={toggleAudio} aria-label={playing ? "Пауза" : "Воспроизвести демо"}>{playing ? "Ⅱ" : "▶"}</button> : <a className="track-action" href={track.url} target="_blank" rel="noopener noreferrer" aria-label={`Открыть ${track.title}`}><Arrow diagonal /></a>}
+              {track.audio && track.audio === firstAudio?.audio ? <button className="track-action" onClick={toggleAudio} aria-label={playing ? "Пауза" : "Воспроизвести демо"}>{playing ? "Ⅱ" : "▶"}</button> : <a className="track-action" href={track.url || content.telegram} target="_blank" rel="noopener noreferrer" aria-label={`Открыть ${track.title}`}><Arrow diagonal /></a>}
             </div>)}
             <div className="player-progress"><span>{formatTime(currentTime)}</span><input aria-label="Позиция воспроизведения демо" type="range" min="0" max={duration || 24} value={Math.min(currentTime, duration || 24)} onChange={e => { if (audioRef.current) audioRef.current.currentTime = Number(e.target.value); }} /><span>{formatTime(duration)}</span></div>
-            <audio ref={audioRef} src={content.music[0].audio} preload="metadata" onLoadedMetadata={e => setDuration(e.currentTarget.duration || 24)} onTimeUpdate={e => setCurrentTime(e.currentTarget.currentTime)} onEnded={() => setPlaying(false)} />
-            <p className="small-note">Демо-трек создан специально для макета. После загрузки твоих миксов заменим его реальной музыкой.</p>
+            <audio ref={audioRef} src={firstAudio?.audio || ""} preload="metadata" onLoadedMetadata={e => setDuration(e.currentTarget.duration || 24)} onTimeUpdate={e => setCurrentTime(e.currentTarget.currentTime)} onEnded={() => setPlaying(false)} />
+            <p className="small-note">Добавляй новые миксы через Sanity Studio.</p>
             <a className="pill-button" href={content.telegram} target="_blank" rel="noopener noreferrer">ВСЕ МИКСЫ В TELEGRAM <Arrow diagonal /></a>
           </div>
         </div>
@@ -106,6 +107,7 @@ export default function Site() {
         <Label index="03 / 06">WATCH / VIDEO</Label>
         <div className="section-heading"><h2>ON THE<br /><em>MOVE.</em></h2><p>Моменты, которые невозможно передать словами. Выступления, события, энергия зала.</p></div>
         <a className="video-feature" href={content.videoArchive} target="_blank" rel="noopener noreferrer" aria-label="Открыть видеоархив DJ ESTRE"><div className="video-graphic"><div className="video-bars" aria-hidden="true">{Array.from({ length: 29 }, (_, i) => <i key={i} style={{ height: `${14 + ((i * 37 + 23) % 79)}%` }} />)}</div><span className="video-oversize">LIVE</span></div><div className="video-play">↗</div><div className="video-feature-bottom"><div><strong>SELECTED PERFORMANCES</strong><span>ВИДЕОПОРТФОЛИО / GOOGLE DRIVE</span></div><span>EXPLORE VIDEOS <Arrow diagonal /></span></div></a>
+        {content.videos?.length ? <div className="cms-videos">{content.videos.map((v, i) => <a key={`${v.url}-${i}`} className="cms-video-card" href={v.url} target="_blank" rel="noopener noreferrer"><span className="cms-video-index">{String(i+1).padStart(2,"0")}</span><strong>{v.title}</strong><span>WATCH ↗</span></a>)}</div> : null}
         <div className="video-footnote"><span>01 / SHOWREEL</span><span>02 / CORPORATE EVENTS</span><span>03 / LIVE MOMENTS</span></div>
       </section>
 
@@ -114,7 +116,7 @@ export default function Site() {
         <div className="section-heading"><h2>IN THE<br /><em>FRAME.</em></h2><p>Каждый сет — своя история.<br />Каждый кадр — момент.</p></div>
         <div className="filter-row" role="group" aria-label="Фильтр фотогалереи">{["ALL", "EVENTS", "BACKSTAGE", "DETAILS"].map(filter => <button key={filter} className={filter === photoFilter ? "selected" : ""} onClick={() => setPhotoFilter(filter)}>{filter}</button>)}</div>
         <div className="photo-grid">{visiblePhotos.map((item, i) => <button className={`photo-tile photo-tile-${i % 6}`} key={item.src} onClick={() => setActivePhoto(item.originalIndex)} aria-label={`Открыть ${item.name}`}><img src={item.src} alt={item.alt} loading="lazy"/><span className="photo-overlay"><span>{item.category} / {item.name}</span><b>↗</b></span></button>)}</div>
-        <p className="small-note">Сейчас в галерее дизайнерские заглушки. Заменим на твои фотографии без изменения вёрстки.</p>
+        <p className="small-note">Фотографии и категории редактируются через Sanity Studio.</p>
       </section>
 
       <section className="portfolio-section section-pad" id="portfolio">
