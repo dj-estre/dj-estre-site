@@ -1,9 +1,10 @@
 
-import HomePage from "@/components/HomePage";
-import { getSiteContent } from "@/lib/sanity";
+import Site from "@/components/Site";
+import { getSiteContent } from "@/lib/sanity-content";
 
-export default async function Page() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
   const content = await getSiteContent();
-
-  return <HomePage content={content} />;
+  return <Site content={content} />;
 }
