@@ -7,6 +7,7 @@ const settings = defineType({
     defineField({name:"location",title:"Локация",type:"string"}),
     defineField({name:"tagline",title:"Слоган",type:"string"}),
     defineField({name:"intro",title:"Обо мне",type:"text",rows:5}),
+    defineField({name:"instagram",title:"Ссылка Instagram",type:"url"}),
     defineField({name:"telegram",title:"Ссылка Telegram",type:"url"}),
     defineField({name:"whatsapp",title:"Ссылка WhatsApp",type:"url"}),
     defineField({name:"email",title:"Email",type:"string"}),
