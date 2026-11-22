@@ -47,11 +47,6 @@ function videoPlayerSource(raw?: string): {kind:"iframe"|"file";src:string} | nu
 function Arrow({ diagonal = false }: { diagonal?: boolean }) {
   return <span aria-hidden="true" className="arrow">{diagonal ? "↗" : "→"}</span>;
 }
-const nav = (
-  content.navigation?.length
-    ? content.navigation
-    : defaultNav
-).filter(item => item.visible !== false);
 
 function Label({ index, children }: { index: string; children: React.ReactNode }) {
   return <div className="section-label"><span>{index}</span><span>{children}</span></div>;
